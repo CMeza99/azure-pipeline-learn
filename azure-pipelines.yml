@@ -13,14 +13,18 @@ jobs:
 
   strategy:
     matrix:
-      run:
+      lint:
         containerResource: py37
         toxenv: lint
+      pytest:
+        containerResource: py37
+        toxenv: py37
 
   container: $[ variables['containerResource'] ]
 
   steps:
-  - script: printenv
+  - script: pip install tox
+  - script: tox -e $[ variables['toxenv'] ]
 
 # pool:
 #   vmImage: 'ubuntu-16.04'
