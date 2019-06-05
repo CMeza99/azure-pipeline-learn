@@ -4,7 +4,7 @@
 resources:
   containers:
   - container: py37
-    image: python:3.7-alpine
+    image: python:3.7-slim
 
 jobs:
 - job: RunInContainer
