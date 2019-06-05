@@ -1,26 +1,26 @@
-# resources:
-#   containers:
-#   - container: py37
-#     image: python:3.7-alpine
+resources:
+  containers:
+  - container: py37
+    image: python:3.7-alpine
 
 # jobs:
 # - job: RunInContainer
 #   pool:
 #     vmImage: 'ubuntu-16.04'
 
-#   strategy:
-#     matrix:
-#       run:
-#         containerResource: py37
-#         toxenv: lint
+strategy:
+  matrix:
+    run:
+      containerResource: py37
+      toxenv: lint
 
-#   container: $[ variables['containerResource'] ]
+container: $[ variables['containerResource'] ]
 
-#   steps:
-#     - script: printenv
-
-pool:
-  vmImage: 'ubuntu-16.04'
-container: ubuntu:16.04
 steps:
 - script: printenv
+
+# pool:
+#   vmImage: 'ubuntu-16.04'
+# container: ubuntu:16.04
+# steps:
+# - script: printenv
