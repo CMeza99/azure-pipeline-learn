@@ -29,8 +29,9 @@ jobs:
   container: python:3.7-slim
 
   steps:
-  - script: sudo apt-get -qq update
-  - script: sudo DEBIAN_FRONTEND=noninteractive apt-get -yqq --no-install-suggests --no-install-recommends install libc6-dev libffi-dev gcc g++ make git > /dev/null &&\
+  - script: whoami
+  - script: apt-get -qq update
+  - script: DEBIAN_FRONTEND=noninteractive apt-get -yqq --no-install-suggests --no-install-recommends install libc6-dev libffi-dev gcc g++ make git > /dev/null &&\
   - script: pip3 install --user 'tox==3.12.1'
   - script: python3 -m tox
 
