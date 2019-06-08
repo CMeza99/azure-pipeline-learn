@@ -1,74 +1,70 @@
 name: $(Date:yyyyMMdd)$(Rev:.r)
-# pool:
-#   vmImage: 'ubuntu-16.04'
+variables:  # default values
+  PY_VER: '3.7'
+  IMG_VARIANT: '-slim'
 
-# resources:
-#   containers:
-#   - container: py37
-#     image: python:3.7-slim
+# Do not depend on platform enviroment
+# https://hynek.me/articles/simple-python-azure-pipelines/
+# Also more easily repoducable on local machine
+stages:
 
-jobs:
-- job: 'Tox'
-  pool:
-    vmImage: 'Ubuntu-16.04'
-  strategy:
-    matrix:
-      lint:
-        toxenv: lint
-      style:
-        toxenv: style
-  steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '3.7'
-  - script: pip install tox
-  - script: tox
+- stage: 'Tox'
+  jobs:
+  - job: 'Env'
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    strategy:
+      matrix:
+        lint:
+          TOXENV: 'lint'
+        style:
+          TOXENV: 'style'
+        package:
+          TOXENV: 'pkg'
+    steps:
+    - script: docker-compose --file tests/docker-compose.yml build
+      displayName: 'Build container'
+    - script: docker-compose --file tests/docker-compose.yml run tox
+      displayName: 'Run Tox'
 
-- job: 'PyTest'
-  pool:
-    vmImage: 'Ubuntu-16.04'
-  strategy:
-    matrix:
-      Python36:
-        python.version: '3.6'
-      Python37:
-        python.version: '3.7'
-    maxParallel: 2
-  steps:
-  - task: UsePythonVersion@0
-    inputs:
-      versionSpec: '$(python.version)'
-  - script: pip install tox
-# - job: BuildContainer
-#   displayName: Building Container
-#   steps:
-#   - script: docker-compose --file tests/docker-compose build
-# - job: RunInContainer
-#   displayName: Tox Tests
-#   pool:
-#     vmImage: 'ubuntu-16.04'
+# - stage: 'PyTest'
+#   dependsOn: []
+#   jobs:
+#   - job: 'Py'
+  - job: 'PyTest'
+    dependsOn: []
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    strategy:
+      matrix:
+        35:
+          PY_VER: '3.5'
+        36:
+          PY_VER: '3.6'
+        37:
+          PY_VER: '3.7'
+    steps:
+    - script: docker-compose --file tests/docker-compose.yml build
+      displayName: 'Build container'
+    - script: |
+        export TOXENV="py${PY_VER//.}"
+        docker-compose --file tests/docker-compose.yml run tox
+      displayName: 'Run Tox'
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+        testResultsFiles: '**/test-*.xml'
+        testRunTitle: 'Publish test results for Python $(python.version)'
+    - task: PublishCodeCoverageResults@1
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
+        reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
 
-#   strategy:
-#     matrix:
-#       lint:
-#         # containerResource: py37
-#         toxenv: lint
-#       pytest:
-#         # containerResource: py37
-#         toxenv: py37
-
-#   # container: $[ variables['containerResource'] ]
-#   container: python:3.7-slim
-
-#   steps:
-#   - script: whoami
-#   - script: apt-get -qq update
-#   - script: DEBIAN_FRONTEND=noninteractive apt-get -yqq --no-install-suggests --no-install-recommends install libc6-dev libffi-dev gcc g++ make git > /dev/null &&\
-#   - script: pip3 install --user 'tox==3.12.1'
-#   - script: python3 -m tox
-
-# pool:
-#   vmImage: 'ubuntu-16.04'
-# container: ubuntu:16.04
-# steps:
-# - script: printenv
+- stage: 'Publish'
+  jobs:
+  - job: 'Package'
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    steps:
+    - script: echo 'TODO - python setup wheel && twine'
