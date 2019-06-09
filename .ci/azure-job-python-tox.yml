@@ -1,0 +1,29 @@
+---
+parameters:
+  name: ''
+  vmImage: ''
+  publishresults: False
+  toxargs: ''
+
+jobs:
+- job: ${{ parameters.name }}
+  pool:
+    vmImage: ${{ parameters.vmImage }}
+  steps:
+  - script: docker-compose --file tests/docker-compose.yml build
+    displayName: 'Build container'
+  - script: |
+      export TOXENV="py${PY_VER//.}"
+      docker-compose --file tests/docker-compose.yml run tox ${{ parameters.toxargs }}
+    displayName: 'Run Tox'
+
+  - task: PublishTestResults@2
+    condition: ${{ parameters.publishresults }}
+    inputs:
+      testResultsFiles: '**/test-*.xml'
+      testRunTitle: 'Publish test results for Python $(python.version)'
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
+      reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
