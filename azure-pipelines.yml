@@ -38,8 +38,8 @@ stages:
         3.5: py35
         3.6: py36
         3.7: py37
-      envvars:
-        IMG_VARIANT: '-alpinexxx'
+      vars:
+        IMG_VARIANT: '-alpine'
 
 - stage: 'Publish'
   jobs:

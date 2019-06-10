@@ -2,7 +2,7 @@
 parameters:
   name: null
   vmImage: 'ubuntu-16.04'
-  envvars: {}
+  vars: {}
   pytest: False
   toxargs: ''
   toxenvs: {}
@@ -11,6 +11,7 @@ jobs:
 - job: ${{ parameters.name }}
   pool:
     vmImage: ${{ parameters.vmImage }}
+  variables: ${{ parameters.vars }}
   strategy:
     matrix:
       ${{ each toxenv in parameters.toxenvs }}:
@@ -22,14 +23,8 @@ jobs:
   steps:
   - script: 'docker-compose --file tests/docker-compose.yml build'
     displayName: 'Build container'
-    env:
-      ${{ each envvar in parameters.envars }}:
-        ${{ envvar.key }}: ${{ envvar.value }}
   - script: 'docker-compose --file tests/docker-compose.yml run tox ${{ parameters.toxargs }}'
     displayName: 'Run Tox'
-    env:
-      ${{ parameters.envvars }}
-
   - task: PublishTestResults@2
     condition: ${{ parameters.pytest }}
     inputs:
