@@ -1,5 +1,6 @@
+---
 name: $(Date:yyyyMMdd)$(Rev:.r)
-variables:  # default values
+variables:
   PY_VER: '3.7'
   IMG_VARIANT: '-slim'
 
@@ -13,65 +14,18 @@ stages:
   - template: .ci/azure-job-python-tox.yml
     parameters:
       name: 'Env'
-      toxenv:
+      toxenvs:
         Lint: lint
         Style: style
         Package: pkg
   - template: .ci/azure-job-python-tox.yml
     parameters:
       name: 'PyTest'
-      publishresults: True
-
-#   - job: 'Env'
-#     pool:
-#       vmImage: 'Ubuntu-16.04'
-#     strategy:
-#       matrix:
-#         lint:
-#           TOXENV: 'lint'
-#         style:
-#           TOXENV: 'style'
-#         package:
-#           TOXENV: 'pkg'
-#     steps:
-#     - script: docker-compose --file tests/docker-compose.yml build
-#       displayName: 'Build container'
-#     - script: docker-compose --file tests/docker-compose.yml run tox
-#       displayName: 'Run Tox'
-
-# # - stage: 'PyTest'
-# #   dependsOn: []
-# #   jobs:
-# #   - job: 'Py'
-#   - job: 'PyTest'
-#     # dependsOn: []
-#     pool:
-#       vmImage: 'Ubuntu-16.04'
-#     strategy:
-#       matrix:
-#         35:
-#           PY_VER: '3.5'
-#         36:
-#           PY_VER: '3.6'
-#         37:
-#           PY_VER: '3.7'
-#     steps:
-#     - script: docker-compose --file tests/docker-compose.yml build
-#       displayName: 'Build container'
-#     - script: |
-#         export TOXENV="py${PY_VER//.}"
-#         docker-compose --file tests/docker-compose.yml run tox
-#       displayName: 'Run Tox'
-#     - task: PublishTestResults@2
-#       condition: succeededOrFailed()
-#       inputs:
-#         testResultsFiles: '**/test-*.xml'
-#         testRunTitle: 'Publish test results for Python $(python.version)'
-#     - task: PublishCodeCoverageResults@1
-#       inputs:
-#         codeCoverageTool: Cobertura
-#         summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
-#         reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
+      pytest: True
+      toxenvs:
+        3.5: py35
+        3.6: py36
+        3.7: py37
 
 - stage: 'Publish'
   jobs:

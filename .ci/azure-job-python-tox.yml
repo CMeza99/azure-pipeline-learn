@@ -2,9 +2,9 @@
 parameters:
   name: null
   vmImage: 'ubuntu-16.04'
-  publishresults: False
+  pytest: False
   toxargs: ''
-  toxenv: {}
+  toxenvs: {}
 
 jobs:
 - job: ${{ parameters.name }}
@@ -12,20 +12,20 @@ jobs:
     vmImage: ${{ parameters.vmImage }}
   strategy:
     matrix:
-      ${{ each env in parameters.toxenv }}:
-        ${{ env.key }}:
-          TOXENV: ${{ env.value }}
+      ${{ each toxenv in parameters.toxenvs }}:
+        ${{ toxenv.key }}:
+          TOXENV: ${{ toxenv.value }}
+          ${{ if eq(parameters.pytest, 'true') }}:
+            PY_VER: ${{ toxenv.key }}
 
   steps:
   - script: 'docker-compose --file tests/docker-compose.yml build'
     displayName: 'Build container'
-  - script: |
-      export TOXENV="py${PY_VER//.}"
-      docker-compose --file tests/docker-compose.yml run tox ${{ parameters.toxargs }}
+  - script: 'docker-compose --file tests/docker-compose.yml run tox ${{ parameters.toxargs }}'
     displayName: 'Run Tox'
 
   - task: PublishTestResults@2
-    condition: ${{ parameters.publishresults }}
+    condition: ${{ parameters.pytest }}
     inputs:
       testResultsFiles: '**/test-*.xml'
       testRunTitle: 'Publish test results for Python $(python.version)'
