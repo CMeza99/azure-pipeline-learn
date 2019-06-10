@@ -13,6 +13,10 @@ stages:
   - template: .ci/azure-job-python-tox.yml
     parameters:
       name: 'Env'
+      toxenv:
+        Lint: lint
+        Style: style
+        Package: pkg
   - template: .ci/azure-job-python-tox.yml
     parameters:
       name: 'PyTest'
