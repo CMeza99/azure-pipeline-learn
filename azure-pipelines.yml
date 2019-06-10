@@ -13,11 +13,9 @@ stages:
   - template: .ci/azure-job-python-tox.yml
     parameters:
       name: 'Env'
-      vmImage: 'ubuntu-16.04'
   - template: .ci/azure-job-python-tox.yml
     parameters:
       name: 'PyTest'
-      vmImage: 'ubuntu-16.04'
       publishresults: True
 
 #   - job: 'Env'

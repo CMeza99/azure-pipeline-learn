@@ -1,16 +1,18 @@
 ---
 parameters:
-  name: ''
-  vmImage: ''
+  name: null
+  vmImage: 'ubuntu-16.04'
   publishresults: False
   toxargs: ''
+
+
 
 jobs:
 - job: ${{ parameters.name }}
   pool:
     vmImage: ${{ parameters.vmImage }}
   steps:
-  - script: docker-compose --file tests/docker-compose.yml build
+  - script: 'docker-compose --file tests/docker-compose.yml build'
     displayName: 'Build container'
   - script: |
       export TOXENV="py${PY_VER//.}"
