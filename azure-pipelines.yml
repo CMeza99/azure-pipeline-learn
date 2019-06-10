@@ -18,14 +18,28 @@ stages:
         Lint: lint
         Style: style
         Package: pkg
+
+- stage: 'PyTest'
+  dependsOn: []
+  jobs:
   - template: .ci/azure-job-python-tox.yml
     parameters:
-      name: 'PyTest'
+      name: 'Py_libc'
       pytest: True
       toxenvs:
         3.5: py35
         3.6: py36
         3.7: py37
+  - template: .ci/azure-job-python-tox.yml
+    parameters:
+      name: 'Py_musl'
+      pytest: True
+      toxenvs:
+        3.5: py35
+        3.6: py36
+        3.7: py37
+      envvars:
+        IMG_VARIANT: '-alpinexxx'
 
 - stage: 'Publish'
   jobs:
