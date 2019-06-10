@@ -1,6 +1,7 @@
+ARG  PY=python
 ARG  PY_VER=latest
 ARG  IMG_VARIANT=
-FROM python:${PY_VER}${IMG_VARIANT}
+FROM ${PY}:${PY_VER}${IMG_VARIANT}
 
 RUN set -ex &&\
     OS="$(grep '^ID=' /etc/os-release | sed 's/ID=\(.*\)/\1/')" &&\

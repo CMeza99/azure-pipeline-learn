@@ -2,11 +2,12 @@
 version: "3.6"
 services:
   tox:
-    image: local/tox:${PY_VER:-latest}${IMG_VARIANT}
+    image: local/tox:${PY:-python}${PY_VER:-latest}${IMG_VARIANT}
     build:
       context: .
       dockerfile: Dockerfile
       args:
+        PY: ${PY:-python}
         PY_VER: ${PY_VER:-latest}
         IMG_VARIANT: ${IMG_VARIANT}
     environment:
