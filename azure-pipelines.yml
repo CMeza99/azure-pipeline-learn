@@ -18,6 +18,8 @@ stages:
         Lint: lint
         Style: style
         Package: pkg
+        Type: type
+        Security: sec
 
 - stage: 'PyTest'
   dependsOn: []
@@ -36,8 +38,8 @@ stages:
       name: 'PyPy'
       pytest: True
       toxenvs:
-        3.5: py35
-        3.6: py36
+        3.5: pypy35
+        3.6: pypy36
       vars:
         PY: 'pypy'
   - template: .ci/azure-job-tox.yml

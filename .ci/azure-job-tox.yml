@@ -4,7 +4,7 @@ parameters:
   vmImage: 'ubuntu-16.04'
   vars: {}
   pytest: False
-  toxargs: ''
+  toxargs: '--skip-missing-interpreters'
   toxenvs: {}
 
 jobs:
@@ -17,15 +17,16 @@ jobs:
       ${{ each toxenv in parameters.toxenvs }}:
         ${{ toxenv.key }}:
           TOXENV: ${{ toxenv.value }}
-          ${{ if eq(parameters.pytest, True) }}:
+          # ${{ if eq(parameters.pytest, True) }}:
+          ${{ parameters.pytest }}:
             PY_VER: ${{ toxenv.key }}
 
   steps:
-  - script: |
-      printf '$(Agent.JobName)\n'
-      docker-compose --file tests/docker-compose.yml build
+  - script: 'docker-compose --file tests/docker-compose.yml build'
     displayName: 'Build container'
-  - script: 'docker-compose --file tests/docker-compose.yml run tox ${{ parameters.toxargs }}'
+    env:
+      TOX_PARALLEL_NO_SPINNER: 1
+  - script: 'docker-compose --file tests/docker-compose.yml run tox ${{ parameters.toxargs }} --'
     displayName: 'Run Tox'
   - task: PublishTestResults@2
     condition: ${{ parameters.pytest }}
@@ -33,6 +34,7 @@ jobs:
       testResultsFiles: '**/test-*.xml'
       testRunTitle: 'Publish test results for Python $(python.version)'
   - task: PublishCodeCoverageResults@1
+    condition: ${{ parameters.pytest }}
     inputs:
       codeCoverageTool: Cobertura
       summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
