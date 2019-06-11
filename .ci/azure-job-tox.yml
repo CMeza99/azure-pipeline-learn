@@ -17,7 +17,6 @@ jobs:
       ${{ each toxenv in parameters.toxenvs }}:
         ${{ toxenv.key }}:
           TOXENV: ${{ toxenv.value }}
-          # ${{ parameters.pytest }}:
           ${{ if eq(parameters.pytest, True) }}:
             PY_VER: ${{ toxenv.key }}
 
@@ -28,15 +27,16 @@ jobs:
       TOX_PARALLEL_NO_SPINNER: 1
   - script: 'docker-compose --file tests/docker-compose.yml run tox ${{ parameters.toxargs }} --'
     displayName: 'Run Tox'
-  - task: PublishTestResults@2
-    condition: ${{ parameters.pytest }}
-    inputs:
-      testResultsFiles: '**/test-*.xml'
-      testRunTitle: 'Publish test results for Python $(python.version)'
-  - task: PublishCodeCoverageResults@1
-    condition: ${{ parameters.pytest }}
-    inputs:
-      codeCoverageTool: Cobertura
-      summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
-      reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
-      failIfCoverageEmpty: True
+    ${{ if eq(parameters.pytest, True) }}:
+      - task: PublishTestResults@2
+        condition: ${{ parameters.pytest }}
+        inputs:
+          testResultsFiles: '**/test-*.xml'
+          testRunTitle: 'Publish test results for Python $(python.version)'
+      - task: PublishCodeCoverageResults@1
+        condition: ${{ parameters.pytest }}
+        inputs:
+          codeCoverageTool: Cobertura
+          summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
+          reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
+          failIfCoverageEmpty: True
