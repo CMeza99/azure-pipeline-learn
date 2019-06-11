@@ -21,6 +21,6 @@ RUN set -ex &&\
       printf '\nERROR: Could not determine Linux disto.\n' &&\
       exit 1 ;\
     fi &&\
-    pip --quiet --no-cache-dir install tox
+    pip --quiet --no-cache-dir install 'tox<4'
 
 CMD [ "tox" ]
