@@ -17,17 +17,21 @@ import pkg_resources
 
 from docopt import docopt
 
-version: Optional[str] = None
 logging.basicConfig(level=logging.DEBUG)
 _LOG = logging.getLogger(__name__)
 
-try:
-    version = pkg_resources.get_distribution(__package__).version
-except pkg_resources.DistributionNotFound:
-    version = None
-
 
 def main():
+    """
+    Main function to ingest cli perameters.
+    """
+
+    version: Optional[str]
+    try:
+        version = pkg_resources.get_distribution(__package__).version
+    except pkg_resources.DistributionNotFound:
+        version = None
+
     arguments = docopt(__doc__, version=version, options_first=False)
     _LOG.debug("Arguments received: %s", arguments)
 
