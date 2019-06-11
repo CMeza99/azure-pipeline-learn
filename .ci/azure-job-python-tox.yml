@@ -17,11 +17,13 @@ jobs:
       ${{ each toxenv in parameters.toxenvs }}:
         ${{ toxenv.key }}:
           TOXENV: ${{ toxenv.value }}
-          ${{ if parameters.pytest }}:
+          ${{ if eq(parameters.pytest, True) }}:
             PY_VER: ${{ toxenv.key }}
 
   steps:
-  - script: 'docker-compose --file tests/docker-compose.yml build'
+  - script: |
+      printf '$(Build.DefinitionName)\n'
+      docker-compose --file tests/docker-compose.yml build
     displayName: 'Build container'
   - script: 'docker-compose --file tests/docker-compose.yml run tox ${{ parameters.toxargs }}'
     displayName: 'Run Tox'
@@ -35,3 +37,4 @@ jobs:
       codeCoverageTool: Cobertura
       summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
       reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
+      failIfCoverageEmpty: True
