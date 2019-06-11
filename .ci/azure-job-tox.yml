@@ -1,7 +1,7 @@
 ---
 parameters:
   name: null
-  vmImage: 'ubuntu-16.04'
+  vmImage: 'ubuntu-latest'
   vars: {}
   pytest: False
   toxargs: '--skip-missing-interpreters'
