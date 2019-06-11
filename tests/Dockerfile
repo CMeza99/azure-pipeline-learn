@@ -21,6 +21,8 @@ RUN set -ex &&\
       printf '\nERROR: Could not determine Linux disto.\n' &&\
       exit 1 ;\
     fi &&\
-    pip --quiet --no-cache-dir install 'tox<4'
+    mkdir -p .config/pip &&\
+    printf '[global]\nno-cache-dir = true\ndisable-pip-version-check = true' > .config/pip/pip.conf &&\
+    pip --quiet install 'tox<4'
 
-CMD [ "tox" ]
+ENTRYPOINT [ "tox" ]
