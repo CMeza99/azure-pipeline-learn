@@ -11,7 +11,7 @@ stages:
 
 - stage: 'Tox'
   jobs:
-  - template: .ci/azure-job-python-tox.yml
+  - template: .ci/azure-job-tox.yml
     parameters:
       name: 'Env'
       toxenvs:
@@ -22,7 +22,7 @@ stages:
 - stage: 'PyTest'
   dependsOn: []
   jobs:
-  - template: .ci/azure-job-python-tox.yml
+  - template: .ci/azure-job-tox.yml
     parameters:
       name: Py
       pytest: True
@@ -31,7 +31,7 @@ stages:
         3.6: py36
         3.7: 'py37'
         3.8-rc: 'py38'
-  - template: .ci/azure-job-python-tox.yml
+  - template: .ci/azure-job-tox.yml
     parameters:
       name: 'PyPy'
       pytest: True
@@ -40,7 +40,7 @@ stages:
         3.6: py36
       vars:
         PY: 'pypy'
-  - template: .ci/azure-job-python-tox.yml
+  - template: .ci/azure-job-tox.yml
     parameters:
       name: 'Py_musl'
       pytest: True
