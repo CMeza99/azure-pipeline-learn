@@ -11,13 +11,11 @@ Options:
 """
 
 import logging
-
 from typing import Optional
 
 import pkg_resources
 
 from docopt import docopt
-
 
 version: Optional[str] = None
 logging.basicConfig(level=logging.DEBUG)
