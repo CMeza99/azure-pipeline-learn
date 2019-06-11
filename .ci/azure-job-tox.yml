@@ -22,7 +22,7 @@ jobs:
 
   steps:
   - script: |
-      printf '$(Build.DefinitionName)\n'
+      printf '$(Agent.JobName)\n'
       docker-compose --file tests/docker-compose.yml build
     displayName: 'Build container'
   - script: 'docker-compose --file tests/docker-compose.yml run tox ${{ parameters.toxargs }}'
