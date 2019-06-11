@@ -15,22 +15,22 @@ stages:
     parameters:
       name: 'Env'
       toxenvs:
-        Lint: lint
-        Style: style
-        Package: pkg
-        Type: type
-        Security: sec
+        Lint: 'lint'
+        Style: 'style'
+        Package: 'pkg'
+        Type: 'type'
+        Security: 'sec'
 
 - stage: 'PyTest'
   dependsOn: []
   jobs:
   - template: .ci/azure-job-tox.yml
     parameters:
-      name: Py
+      name: 'Py'
       pytest: True
       toxenvs:
-        3.5: py35
-        3.6: py36
+        3.5: 'py35'
+        3.6: 'py36'
         3.7: 'py37'
         3.8-rc: 'py38'
   - template: .ci/azure-job-tox.yml
@@ -38,8 +38,8 @@ stages:
       name: 'PyPy'
       pytest: True
       toxenvs:
-        3.5: pypy35
-        3.6: pypy36
+        3.5: 'pypy35'
+        3.6: 'pypy36'
       vars:
         PY: 'pypy'
   - template: .ci/azure-job-tox.yml
