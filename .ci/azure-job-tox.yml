@@ -28,12 +28,12 @@ jobs:
   - script: 'docker-compose --file tests/docker-compose.yml run tox ${{ parameters.toxargs }} --'
     displayName: 'Run Tox'
   - task: PublishTestResults@2
-    condition: ${{ parameters.pytest }}
+    enabled: ${{ parameters.pytest }}
     inputs:
       testResultsFiles: '**/test-*.xml'
       testRunTitle: 'Publish test results for Python $(python.version)'
   - task: PublishCodeCoverageResults@1
-    condition: ${{ parameters.pytest }}
+    enabled: ${{ parameters.pytest }}
     inputs:
       codeCoverageTool: Cobertura
       summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
