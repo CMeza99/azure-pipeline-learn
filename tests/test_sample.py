@@ -2,9 +2,9 @@
 
 # import pytest
 
-# import sample
+import sample
 
 
 def test_true():
     """ Shamefully bad example """
-    assert True
+    assert sample.__version__
