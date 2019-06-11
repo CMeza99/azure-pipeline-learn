@@ -17,8 +17,8 @@ jobs:
       ${{ each toxenv in parameters.toxenvs }}:
         ${{ toxenv.key }}:
           TOXENV: ${{ toxenv.value }}
-          # ${{ if eq(parameters.pytest, True) }}:
-          ${{ parameters.pytest }}:
+          # ${{ parameters.pytest }}:
+          ${{ if eq(parameters.pytest, True) }}:
             PY_VER: ${{ toxenv.key }}
 
   steps:
