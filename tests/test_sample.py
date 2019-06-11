@@ -1,8 +1,8 @@
-"""
-Tests for sample project
-"""
-import pytest
-import sample
+""" Tests for sample project """
+
+# import pytest
+
+# import sample
 
 
 def test_true():
