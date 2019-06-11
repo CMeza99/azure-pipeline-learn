@@ -9,13 +9,13 @@ RUN set -ex &&\
       apt-get -qq update &&\
       DEBIAN_FRONTEND=noninteractive apt-get -yqq --no-install-suggests --no-install-recommends install \
         git \
-        # libc6-dev libffi-dev gcc g++ make \
+        libc6-dev libffi-dev gcc g++ make \
 	    > /dev/null &&\
       rm -rf -- /var/lib/apt/lists/* /var/cache/apt/* ;\
     elif [ "${OS}" = 'alpine' ]; then \
       apk add --no-cache \
       git \
-      # libc-dev libffi-dev gcc g++ make \
+      libc-dev libffi-dev gcc g++ make \
       > /dev/null ;\
     else \
       printf '\nERROR: Could not determine Linux disto.\n' &&\
