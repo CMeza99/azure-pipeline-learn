@@ -4,7 +4,7 @@ parameters:
   vmImage: 'ubuntu-latest'
   vars: {}
   pytest: False
-  toxargs: '--skip-missing-interpreters'
+  toxargs: '--skip-missing-interpreters false'
   toxenvs: {}
 
 jobs:
@@ -27,11 +27,15 @@ jobs:
       TOX_PARALLEL_NO_SPINNER: 1
   - script: 'docker-compose --file tests/docker-compose.yml run tox ${{ parameters.toxargs }} --'
     displayName: 'Run Tox'
+
   - task: PublishTestResults@2
+    # displayName: publish test results via junit
     enabled: ${{ parameters.pytest }}
     inputs:
-      testResultsFiles: '**/test-*.xml'
-      testRunTitle: 'Publish test results for Python $(python.version)'
+      testResultsFormat: "JUnit"
+      testResultsFiles: '$(System.DefaultWorkingDirectory)/**/pytest-$(TOXENV).junit.xml'
+      testRunTitle: 'Publish test results for $(Agent.OS)-$(Agent.OSArchitecture)-$(TOXENV)'
+
   - task: PublishCodeCoverageResults@1
     enabled: ${{ parameters.pytest }}
     inputs:
