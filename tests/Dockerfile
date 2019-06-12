@@ -12,7 +12,7 @@ RUN set -ex &&\
       DEBIAN_FRONTEND=noninteractive apt-get -yqq --no-install-suggests --no-install-recommends install \
         git \
         libc6-dev libffi-dev gcc g++ make \
-	    > /dev/null &&\
+         > /dev/null &&\
       rm -rf -- /var/lib/apt/lists/* /var/cache/apt/* ;\
     elif [ "${OS}" = 'alpine' ]; then \
       apk add --no-cache \
