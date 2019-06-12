@@ -11,7 +11,6 @@ Options:
 """
 
 import logging
-from typing import Optional
 
 import pkg_resources
 
