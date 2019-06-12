@@ -26,7 +26,8 @@ def main():
     Main function to ingest cli perameters.
     """
 
-    version: Optional[str]
+    version = None
+
     try:
         version = pkg_resources.get_distribution(__package__).version
     except pkg_resources.DistributionNotFound:
