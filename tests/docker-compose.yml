@@ -12,6 +12,7 @@ services:
         IMG_VARIANT: ${IMG_VARIANT}
     environment:
       TOXENV: ${TOXENV}
+      PYTEST_XDIST_PROC_NR: ${PYTEST_XDIST_PROC_NR:-auto}
     volumes:
     - type: bind
       source: ..
