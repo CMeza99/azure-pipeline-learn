@@ -42,8 +42,9 @@ wheels/
 .installed.cfg
 *.egg
 MANIFEST
-# mypy
+# typeing
 .mypy_cache/
+.pytype
 # Jupyter Notebook
 .ipynb_checkpoints
 # IPython
