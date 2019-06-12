@@ -40,6 +40,6 @@ jobs:
     enabled: ${{ parameters.pytest }}
     inputs:
       codeCoverageTool: Cobertura
-      summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage.xml'
-      reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov'
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/coverage-$(TOXENV).xml'
+      reportDirectory: '$(System.DefaultWorkingDirectory)/**/htmlcov-$(TOXENV)'
       failIfCoverageEmpty: True
