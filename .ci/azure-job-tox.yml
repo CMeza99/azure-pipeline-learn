@@ -22,12 +22,12 @@ jobs:
             PY_VER: ${{ toxenv.key }}
 
   steps:
-  # - script: 'docker-compose --file .ci/docker-compose.yml build'
-  #   displayName: 'Build container'
+  - script: 'docker-compose --file .ci/docker-compose.yml build'
+    displayName: 'Build container(s)'
   - script: 'docker-compose --file .ci/docker-compose.yml run -T tox ${{ parameters.toxargs }} -- ${{ parameters.posargs }}'
     displayName: 'Run Tox'
     env:
-      PYTEST_XDIST_PROC_NR: 2
+      PYTEST_XDIST_PROC_NR: 1
 
   - task: PublishTestResults@2
     # displayName: publish test results via junit
