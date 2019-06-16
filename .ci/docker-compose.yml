@@ -1,0 +1,26 @@
+---
+version: "3.6"
+services:
+  tox:
+    image: local/tox:${PY:-latest}${PY_VER:-}${IMG_VARIANT:-}
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PY: ${PY:-python}
+        PY_VER: ${PY_VER:-}
+        IMG_VARIANT: ${IMG_VARIANT:-slim}
+    environment:
+      TOXENV: ${TOXENV:-}
+      PYTEST_XDIST_PROC_NR: ${PYTEST_XDIST_PROC_NR:-auto}
+    volumes:
+    - type: bind
+      source: ..
+      target: /mnt/pyproject
+    - type: volume
+      source: toxdir
+      target: ${TOX_WORK_DIR:-/home/tox/.tox}
+    working_dir: /home/tox
+
+volumes:
+  toxdir:
