@@ -11,7 +11,7 @@ sample = {editable = true, path = "."}
 
 [dev-packages]
 better_exceptions = {version="*", index="pypi"}
-docker-compose = {version="*", index="pypi"}
+# docker-compose = {version="*", index="pypi"}
 # twine = {version="*", index="pypi"}
 
 [requires]
