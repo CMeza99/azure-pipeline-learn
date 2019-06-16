@@ -6,6 +6,7 @@ parameters:
   pytest: False
   toxargs: '--skip-missing-interpreters false'
   toxenvs: {}
+  posargs: ''
 
 jobs:
 - job: ${{ parameters.name }}
@@ -21,9 +22,9 @@ jobs:
             PY_VER: ${{ toxenv.key }}
 
   steps:
-  - script: 'docker-compose --file tests/docker-compose.yml build'
-    displayName: 'Build container'
-  - script: 'docker-compose --file tests/docker-compose.yml run tox ${{ parameters.toxargs }} --'
+  # - script: 'docker-compose --file .ci/docker-compose.yml build'
+  #   displayName: 'Build container'
+  - script: 'docker-compose --file .ci/docker-compose.yml run -T tox ${{ parameters.toxargs }} -- ${{{ parameters.posargs }}'
     displayName: 'Run Tox'
     env:
       PYTEST_XDIST_PROC_NR: 2
