@@ -11,7 +11,8 @@ sample = {editable = true, path = "."}
 
 [dev-packages]
 better_exceptions = {version="*", index="pypi"}
-twine = {version="*", index="pypi"}
+docker-compose = {version="*", index="pypi"}
+# twine = {version="*", index="pypi"}
 
 [requires]
 # Can define a specific verions of Python.
@@ -19,5 +20,27 @@ python_version = "3.7"
 
 [scripts]
 build = "python setup.py sdist bdist_wheel"
-cleanup = "sh -c 'rm -rf -- pip-wheel-metadata build/ dist/ .eggs/ src/*.egg-info .tox/'"
+dockerbuild = "docker-compose --file .ci/docker-compose.yml build --pull --compress"
+# cleanup = """
+#   sh -c '\
+#     if command -v docker-compose > /dev/null; then \
+#       [ "$(find . -user 0)" ] &&\
+#         docker-compose --file .ci/docker-compose.yml run --rm --entrypoint "bash -c" tox \
+#           "chown -R $(ls -nd | cut -d " " -f 3) ." ;\
+#       docker-compose --file .ci/docker-compose.yml build ;\
+#       docker-compose --file .ci/docker-compose.yml rm --stop -v --force ;\
+#     fi ;\
+#     rm -rf -- pip-wheel-metadata build/ dist/ .eggs/ src/*.egg-info .tox/'"""
+cleanup = """
+  sh -c '\
+    if command -v docker-compose > /dev/null; then \
+      docker-compose --file .ci/docker-compose.yml rm --stop -v --force ;\
+      docker-compose --file .ci/docker-compose.yml down -v ;\
+    fi ;\
+    rm -rf -- pip-wheel-metadata build/ dist/ .eggs/ src/*.egg-info .pytest_cache .tox/'"""
 publish = "twine upload -r testpypi dist/*"
+tests = """
+  sh -c '\
+    command -v docker-compose > /dev/null \
+      && docker-compose --file .ci/docker-compose.yml run --rm tox \
+      || tox'"""
