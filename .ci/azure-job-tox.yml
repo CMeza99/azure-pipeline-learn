@@ -24,7 +24,7 @@ jobs:
   steps:
   # - script: 'docker-compose --file .ci/docker-compose.yml build'
   #   displayName: 'Build container'
-  - script: 'docker-compose --file .ci/docker-compose.yml run -T tox ${{ parameters.toxargs }} -- ${{{ parameters.posargs }}'
+  - script: 'docker-compose --file .ci/docker-compose.yml run -T tox ${{ parameters.toxargs }} -- ${{ parameters.posargs }}'
     displayName: 'Run Tox'
     env:
       PYTEST_XDIST_PROC_NR: 2
