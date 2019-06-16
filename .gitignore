@@ -10,7 +10,9 @@ pip-delete-this-directory.txt
 .tox/
 .coverage
 .coverage.*
+coverage.xml
 .cache
+htmlcov
 .pytest_cache/
 # Sphinx documentation
 docs/_build/
