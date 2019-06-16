@@ -27,7 +27,7 @@ jobs:
   - script: 'docker-compose --file .ci/docker-compose.yml run -T tox ${{ parameters.toxargs }} -- ${{ parameters.posargs }}'
     displayName: 'Run Tox'
     env:
-      PYTEST_XDIST_PROC_NR: 1
+      PYTEST_XDIST_PROC_NR: 2
 
   - task: PublishTestResults@2
     # displayName: publish test results via junit
