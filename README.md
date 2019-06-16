@@ -11,6 +11,9 @@ Features:
 - Continuos Integration preconfigured:
   - Azure Pipeline
 - Pyproject.toml (PEP 517/518)
+- src-layout
+- module enabled (passes to cli)
+- cli w/ docopts
 - Tests
   - Tox
   - Unit Testing (PyTest)
@@ -38,6 +41,9 @@ TOXENV=lint pipenv run tests
 ## To Dos
 
 - [ ] Complexity
+- [ ] Precommit
+- [ ] Enable BetterExceptions
+- [ ] Logging Framework
 - [ ] Manifest.in
 - [ ] Testing to Test PyPI
 - [ ] Publishing to PyPI
