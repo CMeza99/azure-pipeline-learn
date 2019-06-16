@@ -37,15 +37,16 @@ TOXENV=lint pipenv run tests
 
 ## To Dos
 
-- [ ] Travis CI
-- [ ] Gitlab CI
-- [ ] Publishing to PyPI
+- [ ] Complexity
+- [ ] Manifest.in
 - [ ] Testing to Test PyPI
+- [ ] Publishing to PyPI
 - [ ] Sphinx doc generation
 - [ ] setup.py [ tests, deploy ]
+- [ ] Contributors (from Git, ordered by commits)
 - [ ] Doctest
 - [ ] Towncrier
-- [ ] Contributors (from Git, ordered by commits)
-- [ ] Manifest.in
+- [ ] Travis CI
+- [ ] Gitlab CI
 - [ ] Github Templates
 - [ ] Gitlab Templates
