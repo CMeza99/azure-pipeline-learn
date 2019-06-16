@@ -1,3 +1,5 @@
+[![Build Status](https://dev.azure.com/esc27/learning/_apis/build/status/CMeza99.azure-pipeline-learn?branchName=master)](https://dev.azure.com/esc27/learning/_build/latest?definitionId=1&branchName=master)
+
 # Python Sample Project
 
 This project was originally to learn Azure Pipelines.
