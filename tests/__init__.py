@@ -1,1 +1,1 @@
-"""Testing package for samplei project"""
+"""Testing package for sample project"""
