@@ -1,4 +1,4 @@
-"""cm
+"""
 Sample Python Project
 
 Usage:
@@ -7,7 +7,7 @@ Usage:
 
 Options:
   -v --version                  Show version
-  -h --help                     Show this screen
+  -h --help                     Show help
 """
 
 import logging
@@ -16,19 +16,20 @@ import pkg_resources
 
 from docopt import docopt
 
+
 logging.basicConfig(level=logging.DEBUG)
 _LOG = logging.getLogger(__name__)
 
 
 def main():
     """
-    Main function to ingest cli perameters.
+    Main function to ingest cli parameters.
     """
 
-    version = None
-
     try:
-        version = pkg_resources.get_distribution(__package__).version
+        version = (
+            pkg_resources.get_distribution(__package__).version if __package__ else None
+        )
     except pkg_resources.DistributionNotFound:
         version = None
 
