@@ -1,0 +1,63 @@
+---
+image: docker:latest
+
+services:
+- docker:dind
+
+stages:
+  - Tox
+
+variables:
+  DOCKER_HOST: tcp://localhost:2375/
+  DOCKER_DRIVER: overlay2
+  PY_VER: '3.7'
+  IMG_VARIANT: '-slim'
+  toxargs: '--skip-missing-interpreters false'
+
+.job_template: &job_definition
+  stage: Tox
+  script:
+  - |
+    export TOXENV=${CI_JOB_NAME//'.'}
+    export TOXENV=${TOXENV//_musl}
+  - >
+    if [[ "${CI_JOB_NAME:0:2}" = py ]]; then
+      export PY_VER=${CI_JOB_NAME//_musl}
+      export PY_VER=${PY_VER//py}
+    fi
+  - printenv | sort
+  - apk add python3-dev libffi-dev openssl-dev gcc libc-dev make
+  - pip3 install docker-compose
+  - docker-compose --file .ci/docker-compose.yml build
+  - docker-compose --file .ci/docker-compose.yml run -T tox ${toxargs} --
+  variables:
+    PYTEST_XDIST_PROC_NR: 2
+
+.pypy:
+  extends: .job_template
+  variables:
+    PY: 'pypy'
+
+.cpython_musl:
+  extends: .job_template
+  variables:
+    IMG_VARIANT: '-alpine'
+
+lint:
+  extends: .job_template
+style:
+  extends: .job_template
+type:
+  extends: .job_template
+sec:
+  extends: .job_template
+pkg:
+  extends: .job_template
+py3.6:
+  extends: .job_template
+py3.7:
+  extends: .job_template
+pypy3.6:
+  extends: .pypy
+py3.7_musl:
+  extends: .cpython_musl
