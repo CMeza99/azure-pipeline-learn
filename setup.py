@@ -9,6 +9,7 @@ import sys
 from pkg_resources import VersionConflict, require
 from setuptools import setup
 
+
 # Check for minimal version of setuptools
 SETUPTOOLS_VER = "30.5.0"
 
