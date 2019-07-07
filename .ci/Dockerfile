@@ -5,8 +5,7 @@ FROM ${PY}:${PY_VER}${IMG_VARIANT}
 
 COPY docker-build/root/* /opt/docker-build/
 
-RUN set -ex &&\
-    /opt/docker-build/run.sh
+RUN /opt/docker-build/run.sh
 
 USER tox
 

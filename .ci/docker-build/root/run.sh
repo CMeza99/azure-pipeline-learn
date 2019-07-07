@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
+
+set -ex
+
 OS="$(grep '^ID=' /etc/os-release | sed 's/ID=\(.*\)/\1/')"
+
 if [ "${OS}" = 'debian' ]; then
   apt-get -qq update
   DEBIAN_FRONTEND=noninteractive apt-get -yqq --no-install-suggests --no-install-recommends install \
@@ -20,5 +24,6 @@ else
   printf '\nERROR: Could not determine Linux disto.\n'
   exit 1
 fi
+
 printf '[global]\nno-cache-dir = true\ndisable-pip-version-check = true' > /etc/pip.conf
 pip --quiet install -r /opt/docker-build/requirements.txt
