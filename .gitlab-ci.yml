@@ -8,8 +8,8 @@ stages:
   - Tox
 
 variables:
-  DOCKER_HOST: tcp://localhost:2375/
-  DOCKER_DRIVER: overlay2
+  # DOCKER_HOST: tcp://localhost:2375/
+  # DOCKER_DRIVER: overlay2
   PY_VER: '3.7'
   IMG_VARIANT: '-slim'
   toxargs: '--skip-missing-interpreters false'
