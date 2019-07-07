@@ -21,4 +21,4 @@ else
   exit 1
 fi
 printf '[global]\nno-cache-dir = true\ndisable-pip-version-check = true' > /etc/pip.conf
-pip --quiet install -r /tmp/requirements.txt
+pip --quiet install -r /opt/docker-build/requirements.txt

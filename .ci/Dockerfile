@@ -3,14 +3,14 @@ ARG  PY_VER=latest
 ARG  IMG_VARIANT=
 FROM ${PY}:${PY_VER}${IMG_VARIANT}
 
-COPY docker-build-run.sh requirements.txt /tmp/
+COPY docker-build/root/* /opt/docker-build/
 
 RUN set -ex &&\
-    ./docker-build-run.sh
+    /opt/docker-build/run.sh
 
 USER tox
 
-COPY tox.sh /usr/local/bin
+COPY docker-build/tox/tox.sh /usr/local/bin
 
 ENV PYTEST_XDIST_PROC_NR=auto \
     TOX_WORK_DIR=/home/tox/.tox
